@@ -33,7 +33,6 @@ const Main = (props) => {
     props.addFavoriteRequest(repoInput);
   }
 
-  console.tron.log(props);
   return (
     <Container>
       <Content>
