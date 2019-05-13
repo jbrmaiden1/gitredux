@@ -56,8 +56,18 @@ export const Footer = styled.View`
 `;
 
 export const FooterButton = styled.TouchableOpacity``;
+
 export const FooterLink = styled.Text`
 	color: ${colors.white};
 	font-weight: bold;
 	font-size: 14;
 `;
+
+export const Error = styled.Text`
+	color: ${colors.danger};
+	font-size: 14;
+	font-weight: bold;
+	margin-top: ${metrics.baseMargin};
+`;
+
+export const Loading = styled.ActivityIndicator``;

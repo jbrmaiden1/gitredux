@@ -15,12 +15,16 @@ import {
   FooterButton,
   FooterLink,
   Content,
+  Error,
+  Loading,
 } from './styles';
 
-const Main = (props) => {
+const Main = ({
+  error, favoritesCount, navigation, addFavoriteRequest, loading,
+}) => {
   const [repoInput, setRepoInput] = useState('');
   function navigateToFavorites() {
-    props.navigation.navigate('Favorites');
+    navigation.navigate('Favorites');
   }
 
   function handleChange(text) {
@@ -30,7 +34,7 @@ const Main = (props) => {
   function addRepository() {
     if (!repoInput.length) return;
 
-    props.addFavoriteRequest(repoInput);
+    addFavoriteRequest(repoInput);
   }
 
   return (
@@ -39,6 +43,8 @@ const Main = (props) => {
         <Title>Git Favorite</Title>
 
         <Description>Comece adicionando alguns repositórios aos seus favoritos</Description>
+
+        {!!error && <Error>{error}</Error>}
 
         <Form>
           <Input
@@ -51,17 +57,25 @@ const Main = (props) => {
           />
 
           <Button onPress={addRepository} activeOpacity={0.6}>
-            <ButtonText>Adicionar aos favoritos</ButtonText>
+            {loading ? (
+              <Loading size="small" color="#FFF" />
+            ) : (
+              <ButtonText>Adicionar aos favoritos</ButtonText>
+            )}
           </Button>
         </Form>
       </Content>
       <Footer>
         <FooterButton onPress={navigateToFavorites}>
-          <FooterLink>Favoritos ({props.favoritesCount})</FooterLink>
+          <FooterLink>Favoritos ({favoritesCount})</FooterLink>
         </FooterButton>
       </Footer>
     </Container>
   );
+};
+
+Main.defaultProps = {
+  error: null,
 };
 
 Main.navigationOptions = {
@@ -74,10 +88,14 @@ Main.propTypes = {
   }).isRequired,
   addFavoriteRequest: PropTypes.func.isRequired,
   favoritesCount: PropTypes.number.isRequired,
+  error: PropTypes.oneOfType([null, PropTypes.string]),
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  favoritesCount: state.favorites.length,
+  favoritesCount: state.favorites.data.length,
+  error: state.favorites.error,
+  loading: state.favorites.loading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(FavoriteActions, dispatch);

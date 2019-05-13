@@ -5,8 +5,8 @@ import { colors } from '../../styles';
 import FavoriteItem from './components/FavoriteItem';
 import { Container, Empty, RepoList } from './styles';
 
-const Favorites = (props) => {
-  const [repos, setRepos] = useState(props.favorites);
+const Favorites = ({ favorites }) => {
+  const [repos, setRepos] = useState(favorites);
 
   function renderList() {
     return (
@@ -18,10 +18,9 @@ const Favorites = (props) => {
     );
   }
 
-  console.tron.log(repos);
   return (
     <Container>
-      {repos.length == 0 ? <Empty>Nenhum favorito adicionado</Empty> : renderList()}
+      {repos.length === 0 ? <Empty>Nenhum favorito adicionado</Empty> : renderList()}
     </Container>
   );
 };
@@ -42,7 +41,7 @@ Favorites.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  favorites: state.favorites,
+  favorites: state.favorites.data,
 });
 
 export default connect(mapStateToProps)(Favorites);
